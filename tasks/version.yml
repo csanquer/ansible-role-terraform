@@ -1,5 +1,5 @@
 ---
-- name: get installed terraform version
+- name: get installed terraform version # noqa 301
   shell: "terraform version | sed -e 's/Terraform v//'"
   register: terraform_version_result
   ignore_errors: yes
@@ -24,4 +24,4 @@
 - name: set terraform version fact
   set_fact:
     terraform_version: "{{ terraform_default_version }}"
-  when: terraform_version == '' or terraform_version is none
+  when: not terraform_version
