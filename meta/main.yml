@@ -1,7 +1,9 @@
 ---
 galaxy_info:
+  role_name: terraform
+  namespace: csanquer
   author: Charles Sanquer
-  description: install terraform
+  description: install Hashicorp Terraform
   min_ansible_version: 2.6
   license: LGPLv3
   github_branch: master

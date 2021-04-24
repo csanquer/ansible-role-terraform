@@ -1,0 +1,31 @@
+---
+- name: add Hashicorp repository GPG key
+  apt_key:
+    url: "{{ terraform_apt_key_url }}"
+    state: present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: add Hashicorp repository
+  apt_repository:
+    repo: "deb [arch=amd64] {{ terraform_apt_url }} {{ 'focal' if ansible_distribution_version is version('20.04', '>') else ansible_distribution_release }} main"
+    state: present
+    filename: hashicorp_official
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  register: terraform_apt_result
+
+- name: ensure right permissions on apt sources list
+  file:
+    path: /etc/apt/sources.list.d/hashicorp_official.list
+    owner: root
+    group: root
+    mode: 'u=rw,g=r,o=r'
+
+- name: apt update list for new Hashicorp repository # noqa 503
+  apt:
+    update_cache: yes
+  when: terraform_apt_result.changed | bool
+
+- name: install terraform
+  apt:
+    name: "{{ terraform_apt_package }}{{ ('=' ~ terraform_version) if terraform_version and terraform_version != 'latest' else '' }}"
+    state: "{{ 'present' if terraform_version and terraform_version != 'latest' and terraform_state == 'latest' else terraform_state }}"

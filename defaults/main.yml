@@ -1,2 +1,4 @@
 ---
+terraform_install_binary: false
 terraform_version: latest
+terraform_state: latest

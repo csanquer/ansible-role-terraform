@@ -1,8 +1,10 @@
 ---
-- include: version.yml
+- include: install_package.yml
+  when: not terraform_install_binary | bool
   tags:
     - terraform
 
-- include: install.yml
+- include: install_binary.yml
+  when: terraform_install_binary | bool
   tags:
     - terraform

@@ -1,4 +1,6 @@
 ---
+- include: version.yml
+
 - name: "download terraform binary {{ terraform_version }}"
   get_url:
       url: "{{ terraform_base_url }}/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"
